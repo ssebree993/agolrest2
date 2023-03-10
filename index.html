@@ -152,7 +152,7 @@
         //adding the feature layer to the map
         map.add(airportLayer);
 
-        
+
 
         //adding the const for the feature layer
         const myAirports = new FeatureLayer({
@@ -165,6 +165,43 @@
 
          //adding the feature layer to the map
          map.add(myAirports);
+
+
+        //  view.map.editableLayers.forEach((layer) => {
+        //     if (layer.type === 'feature') {
+        //       switch (layer.geometryType) {
+        //         case "polygon":
+        //           polygonLayer = layer;
+        //         break;
+        //         case "polyline":
+        //           lineLayer = layer;
+        //         break;
+        //         case "point":
+        //           pointLayer = layer;
+        //         break;
+        //        }
+        //       }
+        //   });
+
+          // Create layerInfos for layers in Editor
+
+          // Set the point layer's LayerInfo
+          const pointInfos = {
+            layer: myAirports
+          }
+        
+
+          // Begin Editor constructor
+const editor = new Editor({
+  view: view,
+  layerInfos: [pointInfos]
+}); // End Editor constructor
+
+
+ 
+// Add the widget to the view
+view.ui.add(editor, "top-right");
+
 
     });
   </script>
