@@ -23,9 +23,12 @@
       "esri/layers/GraphicsLayer",
 
       //adding in the module for the feature layers
-      "esri/layers/FeatureLayer"
+      "esri/layers/FeatureLayer",
 
-    ], function (esriConfig, Map, MapView, Graphic, GraphicsLayer, FeatureLayer) {
+      //adding editor widget
+      "esri/widgets/Editor"
+
+    ], function (esriConfig, Map, MapView, Graphic, GraphicsLayer, FeatureLayer, Editor) {
 
       esriConfig.apiKey = "AAPK2cb19acc98eb406b80346e85af5aa1ffagWp07_WJVQlFAY2XL6xGrQ86USz9K6UzB1OaBd37PTIlYdHTo04S0-F9ETbr-dC";
       const map = new Map({
@@ -148,6 +151,20 @@
 
         //adding the feature layer to the map
         map.add(airportLayer);
+
+        
+
+        //adding the const for the feature layer
+        const myAirports = new FeatureLayer({
+          url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/My_Airports/FeatureServer",
+
+          //adding the popup here
+          outFields: ["AirportCode"],
+          
+        });
+
+         //adding the feature layer to the map
+         map.add(myAirports);
 
     });
   </script>
