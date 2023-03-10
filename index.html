@@ -162,45 +162,24 @@
           outFields: ["AirportCode"],
           
         });
-
-         //adding the feature layer to the map
-         map.add(myAirports);
-
-
-        //  view.map.editableLayers.forEach((layer) => {
-        //     if (layer.type === 'feature') {
-        //       switch (layer.geometryType) {
-        //         case "polygon":
-        //           polygonLayer = layer;
-        //         break;
-        //         case "polyline":
-        //           lineLayer = layer;
-        //         break;
-        //         case "point":
-        //           pointLayer = layer;
-        //         break;
-        //        }
-        //       }
-        //   });
-
-          // Create layerInfos for layers in Editor
-
-          // Set the point layer's LayerInfo
-          const pointInfos = {
-            layer: myAirports
-          }
         
-
-          // Begin Editor constructor
-const editor = new Editor({
-  view: view,
-  layerInfos: [pointInfos]
-}); // End Editor constructor
+        //adding the feature layer to the map
+        map.add(myAirports);
 
 
+        // Set the point layer's LayerInfo
+        const pointInfos = {
+          layer: myAirports
+        }
+        
+        // Begin Editor constructor
+        const editor = new Editor({
+          view: view,
+          layerInfos: [pointInfos]
+        }); // End Editor constructor
  
-// Add the widget to the view
-view.ui.add(editor, "top-right");
+        // Add the widget to the view
+        view.ui.add(editor, "top-right");
 
 
     });
