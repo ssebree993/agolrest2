@@ -1,0 +1,355 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Hello, AGOL!</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device width,inital-scale=1">
+    <meta name="description" content="" />
+
+    <!-- Calls for the ArcGIS API's CSS file and JS library. -->
+    <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
+    <script src="https://js.arcgis.com/4.30/"></script>
+
+    <!-- Adding the modules needed for a full-screen map app -->
+    <script>  
+      
+      // sets the AMD modules
+      require(["esri/config", "esri/Map", "esri/views/MapView","esri/Basemap","esri/widgets/BasemapGallery","esri/widgets/Expand","esri/widgets/Locate","esri/widgets/Search","esri/Graphic","esri/layers/GraphicsLayer","esri/layers/FeatureLayer"], function(esriConfig, Map, MapView, Basemap, BasemapGallery, Expand, Locate, Search, Graphic, GraphicsLayer, FeatureLayer) {   
+        esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurA0NJnJge5mvBzdWw05KZVSc-rH0g5ATkOEM72zKXv9kE7x87aUFvshXADkQU53T8CakkL1B1R2r7I2_9kfS1-XHaF7MVYxQ6VLd5p6tEgpzr75twGhsRz6fK1dSQ2ogOJ1_dHzcsbRTtsGi03Zua1qchYuESnptzJ80EJ1mYqWJo3iuugUMeoYeXbWxZQfRu9bQKBf9ibtwnTc5YG16I7WxJOj3SrYYt-VrPMyknXjtAT1_V1XfrGt6";
+        // creates the map and assigns initial basemap
+        const map = new Map({
+          basemap: "arcgis-oceans" // Basemap layer service 
+        });
+
+        // sets center point (via long and lat) and zoom level
+        const view = new MapView({
+          map: map,
+          center: [-68.3, 44.33], // Longitude, latitude
+          zoom: 11, // Zoom level
+          container: "viewDiv" // Div element
+        });
+
+        // adding the constructor for the graphicslayer
+        const graphicsLayer = new GraphicsLayer();  
+        map.add(graphicsLayer);
+
+        // defining the geometry of the point
+        const point = { //Create a point
+          type: "point",  
+          longitude: -68.321218,    //long lat of vacation house for October 2024
+          latitude: 44.339129
+        };
+
+        // defining the marker style
+        const simpleMarkerSymbol = {  
+          type: "simple-marker",
+          style: "diamond",  
+          size: "16px",
+          color: [255,179,67],  // Color of fall leaves
+          outline: {  
+            color: [149,6,6], // fall red  
+            width: 1
+          }  
+        };
+
+        // defining popup properties
+        const popupTemplate = {
+            title: "{Name}",
+            content: "{Description}"
+        }
+        const attributes = {
+            Name: "Starboard Cottage",
+            Description: "Stunning cottage overlooking Somes Sound, can't wait to go next month!"
+        }
+
+        // creating the point
+        const pointGraphic = new Graphic({  
+          geometry: point,  
+          symbol: simpleMarkerSymbol,
+
+          // adding popup properties
+          attributes: attributes,
+          popupTemplate: popupTemplate
+
+        });
+
+        // add the point to the graphicsLayer
+        graphicsLayer.add(pointGraphic);
+
+        // First create a line geometry
+        const polyline = {
+          type: "polyline", // autocasts as new Polyline()
+          paths: [[-68.321596, 44.339116], [-68.323310, 44.338122], [-68.326179, 44.339890], [-68.332314, 44.337929], [-68.335535, 44.336174], [-68.337364, 44.359077], [-68.330688, 44.368839], [-68.324012, 44.370618], [-68.309393, 44.364358], [-68.307250, 44.363555], [-68.299646, 44.367860], [-68.295716, 44.374609], [-68.284669, 44.380964], [-68.238836, 44.376486], [-68.220468, 44.382989]]
+        };
+
+        // Create a symbol for drawing the line
+        const lineSymbol = {
+          type: "simple-line", // autocasts as SimpleLineSymbol()
+          color: [149,6,6], // fall red color
+          width: 3
+        };
+
+        // Create an object for storing attributes related to the line
+        const lineAtt = {
+          Name: "Route to Bar Harbor",
+          Mode: "By car",
+          Length: "TBD"
+        };
+
+        // Create the polyline graphic
+         const polylineGraphic = new Graphic({
+          geometry: polyline,
+          symbol: lineSymbol,
+          attributes: lineAtt,
+          popupTemplate: {
+            // autocasts as new PopupTemplate()
+            title: "{Name}",
+            content: [
+              {
+                type: "fields",
+                fieldInfos: [
+                  {
+                    fieldName: "Name"
+                  },
+                  {
+                    fieldName: "Mode"
+                  },
+                  {
+                    fieldName: "Length"
+                  }
+                ]
+              }
+            ]
+          }
+        });
+
+        // Create a polygon geometry
+        const polygon = {
+          type: "polygon", // autocasts as new Polygon()
+          rings: [[-68.262105, 44.421548], [-68.183449, 44.362914], [-68.230546, 44.300268], [-68.347758, 44.292003], [-68.297813, 44.239284], [-68.336210, 44.221080], [-68.418200, 44.318861], [-68.286842, 44.389253]]
+        };
+
+        // Create a symbol for rendering the graphic
+        const fillSymbol = {
+          type: "simple-fill", // autocasts as new SimpleFillSymbol()
+          color: [44,95,52, 0.5],
+          outline: {
+            // autocasts as new SimpleLineSymbol()
+            color: [255, 255, 255, 0.5],
+            width: 2
+          }
+        };
+
+        // Add the geometry and symbol to a new graphic
+        const polygonGraphic = new Graphic({
+          geometry: polygon,
+          symbol: fillSymbol
+        });
+
+        // Add the graphics to the view's graphics layer
+        view.graphics.addMany([polylineGraphic, polygonGraphic]);
+
+        
+        // Define a pop-up for photoLayer
+        const popupPhoto = {
+          "title": "<span style='font-family: Garamond; color: #2c5f34'>{Title}</span>",
+          "content": "<span style='font-family: Garamond; font-size: 14px; line-height: 150%;'><b>Description:</b> {Description}<br><b>Project:</b> {ProjectName}<br><b>Date taken:</b> {DateTakenExact}<br><b>Photographer:</b> {Photographer}<br><br><b>&nbsp;</b> {DigitalMainePreview}<br></span>"
+        }
+        
+        // Adding the constructor for the feature layer
+        const photosLayer = new FeatureLayer({
+          url: "https://services1.arcgis.com/RbMX0mRVOFNTdLzd/arcgis/rest/services/MGS_Field_Photos_Digital_Maine/FeatureServer",
+
+          //adding the popup here
+          outFields: ["Title","DateTakenExact","DigitalMainePreview"],
+          popupTemplate: popupPhoto
+
+        });
+
+        // Adding the feature layer to the map
+        map.add(photosLayer);
+       
+        // Setting up the icon
+        const airportRenderer = {
+        "type": "simple",
+        "symbol": {
+          "type": "picture-marker",
+          "url": "https://ericdmj.github.io/agol/airport.png",
+          "width": "18px",
+          "height": "18px"
+        }
+      }
+        
+        //const to make the airport labels
+        const airportLabels = {
+          symbol: {
+            type: "text",
+            color: "#FFFFFF",
+            haloColor: "#2c5f34",
+            haloSize: "1px",
+            font: {
+              size: "12px",
+              family: "Noto Sans",
+              style: "italic",
+              weight: "normal"
+            }
+          },
+          labelPlacement: "above-center",
+          labelExpressionInfo: {
+            expression: "$feature.Fac_Name"
+          }
+        };
+      
+        // Adding the constructor for the feature layer
+        const airportLayer = new FeatureLayer({
+          url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Airports_EJ/FeatureServer",
+          renderer: airportRenderer, // Calling the icon
+          definitionExpression: "Fac_Type = 'AIRPORT'", //adding sql to filter for airports
+
+          labelingInfo: [airportLabels] //adding the labels
+
+        });
+
+        // Adding the feature layer to the map
+        map.add(airportLayer);
+
+        // Setting up the icon
+        const heliportRenderer = {
+        "type": "simple",
+        "symbol": {
+          "type": "picture-marker",
+          "url": "https://ericdmj.github.io/agol/heliport.png",
+          "width": "18px",
+          "height": "18px"
+        }
+      }
+        
+        //const to make the airport labels
+        const heliportLabels = {
+          symbol: {
+            type: "text",
+            color: "#FFFFFF",
+            haloColor: "#950606",
+            haloSize: "1px",
+            font: {
+              size: "12px",
+              family: "Noto Sans",
+              style: "italic",
+              weight: "normal"
+            }
+          },
+          labelPlacement: "above-center",
+          labelExpressionInfo: {
+            expression: "$feature.Fac_Name"
+          }
+        };
+      
+        // Adding the constructor for the feature layer
+        const heliportLayer = new FeatureLayer({
+          url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Airports_EJ/FeatureServer",
+          renderer: heliportRenderer, // Calling the icon
+          definitionExpression: "Fac_Type = 'HELIPORT'", //adding sql to filter for airports
+
+          labelingInfo: [heliportLabels] //adding the labels
+
+        });
+
+        // Adding the feature layer to the map
+        map.add(heliportLayer);
+        
+        // creates the search box
+        const searchWidget = new Search({
+          view: view
+        });
+        // Adds the search widget below other elements in
+        // the top left corner of the view
+        view.ui.add(searchWidget, {
+          position: "top-right",
+          index: 2
+        });
+
+        // Custom Basemap List
+        const customBasemaps = [
+            new Basemap({
+                portalItem: {
+                    id: "67ab7f7c535c4687b6518e6d2343e8a2"  // Ocean Basemap ID
+                },
+                thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/67ab7f7c535c4687b6518e6d2343e8a2/info/thumbnail/thumbnail1561651100093.jpeg" // Correct URL for thumbnail
+            }),
+            new Basemap({
+                portalItem: {
+                    id: "826498a48bd0424f9c9315214f2165d4"  // Colored Pencil Basemap ID
+                },
+                thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/826498a48bd0424f9c9315214f2165d4/info/thumbnail/thumbnail1580490854424.jpeg"
+            }),
+            new Basemap({
+                portalItem: {
+                    id: "f35ef07c9ed24020aadd65c8a65d3754"  // Modern Antique Basemap ID
+                },
+                thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/f35ef07c9ed24020aadd65c8a65d3754/info/thumbnail/thumbnail1584383047375.jpeg"
+            }),
+            new Basemap({
+                portalItem: {
+                    id: "867895a71a1840399476fc717e76bb43"  // Mid-Century Basemap ID
+                },
+                thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/867895a71a1840399476fc717e76bb43/info/thumbnail/thumbnail1563382006810.jpeg"
+            }),
+            new Basemap({
+                portalItem: {
+                    id: "75a3ce8990674a5ebd5b9ab66bdab893"  // Newspaper Basemap ID
+                },
+                thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/75a3ce8990674a5ebd5b9ab66bdab893/info/thumbnail/thumbnail1563382193586.jpeg"
+            })
+        ];
+
+        // builds basemap gallery using custom basemaps
+        const basemapGallery = new BasemapGallery({
+          view: view,
+          source: customBasemaps
+          // source: [Basemap.fromId("arcgis-oceans"),Basemap.fromId("arcgis-colored-pencil"),Basemap.fromId("arcgis-modern-antique"),Basemap.fromId("arcgis-midcentury"),Basemap.fromId("arcgis-newspaper")] // autocasts to LocalBasemapsSource
+        });
+
+        // Create an Expand instance for the basemap gallery and set the content
+        // property to the DOM node of the basemap gallery widget
+        const bgExpand = new Expand({
+          view: view,
+          content: basemapGallery
+        });
+
+        // Add the expand instance to the ui
+        view.ui.add(bgExpand, "top-right");
+
+        // create the locate button
+        const locateBtn = new Locate({
+          view: view
+        });
+
+        // Add the locate widget to the top left corner of the view
+        view.ui.add(locateBtn, {
+          position: "top-left"
+        });
+
+      });  
+
+     </script>
+
+    <!-- CSS to make a full-screen map -->
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style> 
+  </head>
+  <body>
+
+    <!-- The div to display the map -->
+    <div id="viewDiv"></div> 
+
+  </body>
+</html>
