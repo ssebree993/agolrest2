@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Hello AGOL</title>
+  <title>Hello Lab 03</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -26,11 +26,15 @@
     require([
       "esri/config", 
       "esri/Map", 
-      "esri/views/MapView", 
+      "esri/views/MapView",
+      "esri/widgets/BasemapGallery",
+      "esri/Basemap",
+      "esri/widgets/Locate",
+      "esri/widgets/Search", 
       "esri/Graphic",
       "esri/layers/GraphicsLayer",
       "esri/layers/FeatureLayer"
-    ], function(esriConfig, Map, MapView, Graphic, GraphicsLayer, FeatureLayer) {
+    ], function(esriConfig, Map, MapView, BasemapGallery, Basemap, Locate, Search, Graphic, GraphicsLayer, FeatureLayer) {
       
       // Set the API key
       esriConfig.apiKey = "AAPKfc7af196c6e64aac988bbf7529dccd648UR6aqr1HCuaJ5GN7OXourF3WZ9GF_b8R9-mMcrEZMHlZzpuLXHwt5iwInOA9k4J";
@@ -46,6 +50,26 @@
         center: [-98.995, 40.70100], // Longitude, latitude Kearney, NE
         zoom: 9, // Zoom level
       });
+
+      const basemapGallery = new BasemapGallery({
+        view: view
+      });
+
+      view.ui.add(basemapGallery, {
+        position: "bottom-right"
+      });
+
+      // Add the locateWidget
+      const locateWidget = new Locate({
+        view: view
+      });
+      view.ui.add(locateWidget, "upper-left") 
+      index = 0;
+
+      // Add the searchWidget
+      view.ui.add(new Search({
+        view: view
+      }), "top-right");
 
       // Adding the constructor for the graphics layer
       const graphicsLayer = new GraphicsLayer();
@@ -137,7 +161,7 @@
       // Define a pop-up for usaeduLayer
       const popupEduusa = {
         "title": "Educational Institutions: {CITY}, {STABBR}",
-        content: "<p>As of 2024, <b>{INSTNM}</b>, is a " +
+        content: "<p>As of 2024, <b>{NAME}</b>, is a " +
           "<b>{SECTOR}</b> school.</p>" +
           "<p>For more information, visit: <a href='{WEBADDR}'>{WEBADDR}</a></p>"
       }
@@ -158,7 +182,7 @@
         url: "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Colleges_and_Universities_View/FeatureServer",
         // alt = url:"https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Structures_Education_v1/FeatureServer"
         renderer: eduRenderer,  // Calling the icon
-        outFields: ["NAME","TOT_ENROLL"],
+        outFields: ["NAME","ADDRESS"],
         popupTemplate: popupEduusa
       });
 
@@ -193,7 +217,7 @@
         }
       };
 
-      //Define a popup for the airportLayer
+      // Define a popup for the airportLayer
       const popupAirport = {
         "title": "Airport: {FAC_NAME}",
         "content": "Location ID: {LOC_ID}"
@@ -219,6 +243,7 @@
           "height": "20px"
         }
       };
+
       const hpLabels = {
         symbol: {
           type: "text",
@@ -238,11 +263,12 @@
         }
       };
 
-      //Define a popup for the airportLayer
+      // Define a popup for the airportLayer
       const popupHP = {
         "title": "Heliport: {FAC_NAME}",
         "content": "Location ID: {LOC_ID}"
       };
+
       const hpLayer = new FeatureLayer({
         url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Airports_576/FeatureServer",
         renderer: hpRenderer,  // Calling the icon
