@@ -1,2 +1,2 @@
 # esrijs
-My Esri JS Map accessing and writing to AGOL
+Lab 3 repo cloned from agolrest in Dr. Sounnys repo. 
