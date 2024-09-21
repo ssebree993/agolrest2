@@ -338,7 +338,29 @@
         index: 2
       });
 
+      //Adding the const for the feature layer
+      const myAirports2 = new FeatureLayer({
+        url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/My_Airports2/FeatureServer",
 
+        //addin the popup here
+        outFields: ["AirportCode"],
+      });
+      //adding the feature layer to the map
+      map.add(myAirports2);
+
+      //Set the point layers' LayerInfo
+      const pointInfos = {
+        layer: myAirports2
+      }
+      //Begin Editor constructor
+      const editor = new Editor({
+        view: view,
+        layerInfos: [pointInfos]
+      });    //End Editor constructor
+
+      //add widget to the view
+      view.ui.add(editor, "top-right");
+      
     });
   </script> 
 </head>
