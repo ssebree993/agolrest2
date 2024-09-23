@@ -243,7 +243,7 @@
       });
 
       // Add widget to the view
-      view.ui.add(editor, "top-right");
+      view.ui.add(editor, "top-right", index = 1);
 
       // Create the legend
       var legend = new Legend({
@@ -269,7 +269,7 @@
       });
 
       // Add the legend to the bottom-right corner of the view
-      view.ui.add(legend, "bottom-right");
+      view.ui.add(legend, "bottom-left");
 
       // Creates the search box
       const searchWidget = new Search({
@@ -279,7 +279,7 @@
       // Add the searchWidget
       view.ui.add(searchWidget, {
         position: "top-right",
-        index: 2
+        index: 0
       });
 
       // Custom Basemap List
@@ -330,7 +330,8 @@
       });
 
       // Add the expand instance to the ui
-      view.ui.add(bgExpand, "top-right");
+      view.ui.add(bgExpand, "top-left",
+        { index: 1 });
 
       // Create locate button
       const locateWidget = new Locate({
