@@ -40,7 +40,9 @@
       "esri/views/View",
       "esri/widgets/Legend",
       "esri/WebMap",
-    ], function (esriConfig, Map, MapView, BasemapGallery, Basemap, Expand, Search, Locate, Graphic, GraphicsLayer, FeatureLayer, Editor, View, Legend, WebMap) {
+    ], function (
+      esriConfig, Map, MapView, BasemapGallery, Basemap, Expand, Search, Locate, Graphic, GraphicsLayer, FeatureLayer, Editor, View, Legend, WebMap
+    ) {
       // Set the API key
       esriConfig.apiKey = "AAPKfc7af196c6e64aac988bbf7529dccd648UR6aqr1HCuaJ5GN7OXourF3WZ9GF_b8R9-mMcrEZMHlZzpuLXHwt5iwInOA9k4J";
 
@@ -183,10 +185,47 @@
       map.add(hpLayer);
       map.add(usaeduLayer);
 
+      // Define a popup for myAirports
+      const popupCap = {
+        "title": "My Airport: {AirportCode}"
+      };
+      // Symbol for myAirports
+      const CapRenderer = {
+        "type": "simple",
+        "symbol": {
+          "type": "picture-marker",
+          "url": "http://static.arcgis.com/images/Symbols/Transportation/Seaplane.png",
+          "width": "24px",
+          "height": "24px"
+        }
+      };
+      // Label for myAirports
+      const CapLabel = {
+        symbol: {
+          type: "text",
+          color: "Blue",
+          haloColor: "white",
+          haloSize: "1px",
+          font: {
+            size: "12px",
+            family: "Noto Sans",
+            style: "normal",
+            weight: "normal"
+          }
+        },
+        labelPlacement: "above-right",
+        labelExpressionInfo: {
+          expression: "$feature.AirportCode"
+        }
+      };
+
       // Adding the const for the feature layer
       const myAirports = new FeatureLayer({
         url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/My_Airports2/FeatureServer",
+        renderer: CapRenderer,  // Calling the icon
+        labelingInfo: [CapLabel], // Adding the labels
         outFields: ["AirportCode"],
+        popupTemplate: popupCap
       });
 
       // Adding the feature layer to the map
