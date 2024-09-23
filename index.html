@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>Hello, AGOL Write this to the database for Me! Add Edit and Legend Widget!</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <!-- Calls for the ArcGIS API's CSS file and JS Library -->
   <link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css">
   <script src="https://js.arcgis.com/4.30/"></script>
 
   <!-- CSS to make a full screen map -->
   <style>
-    html, 
-    body, 
+    html,
+    body,
     #viewDiv {
       padding: 0;
       margin: 0;
-      height: 100%; 
+      height: 100%;
       width: 100%;
     }
   </style>
@@ -24,29 +25,30 @@
   <!-- Adding the modules, callback function as arguments, API key, and map constant needed for a full screen map app -->
   <script>
     require([
-      "esri/config", 
-      "esri/Map", 
+      "esri/config",
+      "esri/Map",
       "esri/views/MapView",
       "esri/widgets/BasemapGallery",
       "esri/Basemap",
       "esri/widgets/Expand",
       "esri/widgets/Search",
-      "esri/widgets/Locate", 
+      "esri/widgets/Locate",
       "esri/Graphic",
       "esri/layers/GraphicsLayer",
       "esri/layers/FeatureLayer",
       "esri/widgets/Editor",
+      "esri/views/View",
       "esri/widgets/Legend",
       "esri/WebMap",
-    ], function(esriConfig, Map, MapView, BasemapGallery, Basemap, Expand, Search, Locate, Graphic, GraphicsLayer, FeatureLayer, Editor, Legend, WebMap) {
+    ], function (esriConfig, Map, MapView, BasemapGallery, Basemap, Expand, Search, Locate, Graphic, GraphicsLayer, FeatureLayer, Editor, View, Legend, WebMap) {
       // Set the API key
       esriConfig.apiKey = "AAPKfc7af196c6e64aac988bbf7529dccd648UR6aqr1HCuaJ5GN7OXourF3WZ9GF_b8R9-mMcrEZMHlZzpuLXHwt5iwInOA9k4J";
-      
+
       // Creates the map and sets initial basemap
       const map = new Map({
         basemap: "arcgis-streets" // Basemap layer service
       });
- 
+
       // Create the map view
       const view = new MapView({
         container: "viewDiv", // div to hold the map
@@ -55,96 +57,6 @@
         zoom: 9 // Zoom level
       });
 
-      // Add legend widget using sample code from developers.arcgis.com
-      // First reference the first portal layer in WebMap 
-
-      /* // Adding the constructor for the graphics layer
-      const graphicsLayer = new GraphicsLayer();
-      map.add(graphicsLayer);
-
-      // 1. Defining the geometry of the point
-      const point = { 
-        type: "point",  
-        longitude: -99.09579, // Longitude of UNK
-        latitude: 40.70007   // Latitude of UNK
-      };
-
-      // Define the geometry of the line
-      const polyline = {
-        type: "polyline", // autocasts as new Polyline()
-        paths: [[-99.05497, 41.02184],[-98.61799, 40.63240]]
-      };
-
-      // Define the geometry of the polygon
-      const polygon = {
-        type: "polygon", // autocasts as new Polygon()
-        rings: [[-99.27, 40.88],[-99.27, 40.26],[-98.60, 40.26],[-98.60, 40.88]]
-      };
-      
-      // 2. Defining marker style
-      const simpleMarkerSymbol = {  
-        type: "simple-marker", 
-        style: "square", 
-        size: "20px",
-        color: [0, 0, 255],  // Lopers blue 
-        outline: {  
-          color: [255, 255, 255], // White  
-          width: 3
-        }
-      }; 
-
-      const simpleLineSymbol = {
-        type: "simple-line", // autocasts as new SimpleLineSymbol()
-        color: [0,0,0],  // black line
-        width: 8
-      };
-
-      const simplePolyGraphic = {
-        type: "simple-fill", // autocasts as new SimpleFillSymbol()
-        color: [227, 139, 79, 0.8],
-        transparency: 0.9,
-        outline: { // autocasts as new SimpleLineSymbol()
-          color: [255, 255, 255], // White box 
-          width: 6
-        }
-      }; 
-
-      // Defining popup properties
-      const popupTemplate = {
-        title: "{Name}",
-        content: "{Description}"
-      };
-
-      const attributes = {
-        Name: "University of Nebraska - Kearney (UNK)",
-        Description: "Bruner Hall: <a href='https://www.unk.edu/academics/geography/index.php'> My Geography Home!</a>"
-      };
-      
-      // 3. Creating the point
-      const pointGraphic = new Graphic({  
-        geometry: point,  
-        symbol: simpleMarkerSymbol,
-        attributes: attributes,
-        popupTemplate: popupTemplate        
-      });
-
-      // Creating the line
-      const lineGraphic = new Graphic({
-        geometry: polyline,
-        symbol: simpleLineSymbol
-      });
-
-      // Creating the polygon
-      const polyGraphic = new Graphic({
-        geometry: polygon,
-        symbol: simplePolyGraphic
-      });
-
-      // 4. Adding the point to the graphics layer
-      graphicsLayer.add(polyGraphic);
-      graphicsLayer.add(lineGraphic);      
-      graphicsLayer.add(pointGraphic);
- */
       // Define a pop-up for usaeduLayer
       const popupEduusa = {
         "title": "Educational Institutions: {CITY}, {STABBR}",
@@ -168,7 +80,7 @@
       const usaeduLayer = new FeatureLayer({
         url: "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Colleges_and_Universities_View/FeatureServer",
         renderer: eduRenderer,  // Calling the icon
-        outFields: ["INSTNM","ADDR"],
+        outFields: ["INSTNM", "ADDR"],
         popupTemplate: popupEduusa
       });
 
@@ -216,7 +128,7 @@
         maxScale: 1000, // Most zoomed in. Max should always be smaller than min.
         definitionExpression: "Fac_type = 'AIRPORT'", // Filtering the airports
         labelingInfo: [airportLabels], // Adding the labels  
-        outFields: ["FAC_NAME","LOC_ID"],
+        outFields: ["FAC_NAME", "LOC_ID"],
         popupTemplate: popupAirport
       });
 
@@ -262,7 +174,7 @@
         maxScale: 1000, // Most zoomed in. Max should always be smaller than min.
         definitionExpression: "Fac_type = 'HELIPORT'", // Filtering the airports
         labelingInfo: [hpLabels], // Adding the labels 
-        outFields: ["FAC_NAME","LOC_ID"],
+        outFields: ["FAC_NAME", "LOC_ID"],
         popupTemplate: popupHP
       });
 
@@ -270,7 +182,56 @@
       map.add(airportLayer);
       map.add(hpLayer);
       map.add(usaeduLayer);
-      
+
+      // Adding the const for the feature layer
+      const myAirports2 = new FeatureLayer({
+        url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/My_Airports2/FeatureServer",
+        outFields: ["AirportCode"],
+      });
+
+      // Adding the feature layer to the map
+      map.add(myAirports2);
+
+      // Set the point layers' LayerInfo
+      const pointInfos = {
+        layer: myAirports2
+      }
+
+      // Begin Editor constructor
+      const editor = new Editor({
+        view: view,
+        layerInfos: [pointInfos]
+      });
+
+      // Add widget to the view
+      view.ui.add(editor, "top-right");
+
+      // Create the legend
+      var legend = new Legend({
+        view: view, // Reference to the MapView or SceneView
+        layerInfos: [
+          {
+            layer: airportLayer,
+            title: "Airports"
+          },
+          {
+            layer: hpLayer,
+            title: "Heliports"
+          },
+          {
+            layer: usaeduLayer,
+            title: "Educational Institutions"
+          },
+          {
+            layer: myAirports2,
+            title: "My Airports"
+          }
+        ]
+      });
+
+      // Add the legend to the bottom-right corner of the view
+      view.ui.add(legend, "bottom-right");
+
       // Creates the search box
       const searchWidget = new Search({
         view: view
@@ -336,40 +297,19 @@
       const locateWidget = new Locate({
         view: view
       });
-      
+
       view.ui.add(locateWidget, {
-        position: "top-left", 
+        position: "top-left",
         index: 2
       });
 
-      // Adding the const for the feature layer
-      const myAirports2 = new FeatureLayer({
-        url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/My_Airports2/FeatureServer",
-        outFields: ["AirportCode"],
-      });
-
-      // Adding the feature layer to the map
-      map.add(myAirports2);
-
-      // Set the point layers' LayerInfo
-      const pointInfos = {
-        layer: myAirports2
-      }
-
-      // Begin Editor constructor
-      const editor = new Editor({
-        view: view,
-        layerInfos: [pointInfos]
-      });
-
-      // Add widget to the view
-      view.ui.add(editor, "top-right");
-      
     });
-  </script> 
+  </script>
 </head>
+
 <body>
   <!-- The div to display the map -->
   <div id="viewDiv"></div>
 </body>
+
 </html>
