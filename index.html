@@ -21,7 +21,7 @@
     }
   </style>
 
-  <!-- Adding the modules, callback function as arguements,API key, and map constant needed for a full screen map app -->
+  <!-- Adding the modules, callback function as arguments, API key, and map constant needed for a full screen map app -->
   <script>
     require([
       "esri/config", 
@@ -55,9 +55,8 @@
         zoom: 9 // Zoom level
       });
 
-      //Add legend widget using sample code from developers.arcgis.com
-      //First reference the first portal layer in WebMap 
-
+      // Add legend widget using sample code from developers.arcgis.com
+      // First reference the first portal layer in WebMap 
 
       /* // Adding the constructor for the graphics layer
       const graphicsLayer = new GraphicsLayer();
@@ -273,7 +272,7 @@
       map.add(usaeduLayer);
       
       // Creates the search box
-        const searchWidget = new Search({
+      const searchWidget = new Search({
         view: view
       });
 
@@ -283,56 +282,55 @@
         index: 2
       });
 
-      //Custom Basemap List
+      // Custom Basemap List
       const customBasemaps = [
-      new Basemap({
-                portalItem: {
-                    id: "67ab7f7c535c4687b6518e6d2343e8a2"  // Ocean Basemap ID
-                },
-                thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/67ab7f7c535c4687b6518e6d2343e8a2/info/thumbnail/thumbnail1561651100093.jpeg" // Correct URL for thumbnail
-            }),
-            new Basemap({
-                portalItem: {
-                    id: "826498a48bd0424f9c9315214f2165d4"  // Colored Pencil Basemap ID
-                },
-                thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/826498a48bd0424f9c9315214f2165d4/info/thumbnail/thumbnail1580490854424.jpeg"
-            }),
-            new Basemap({
-                portalItem: {
-                    id: "f35ef07c9ed24020aadd65c8a65d3754"  // Modern Antique Basemap ID
-                },
-                thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/f35ef07c9ed24020aadd65c8a65d3754/info/thumbnail/thumbnail1584383047375.jpeg"
-            }),
-            new Basemap({
-                portalItem: {
-                    id: "867895a71a1840399476fc717e76bb43"  // Mid-Century Basemap ID
-                },
-                thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/867895a71a1840399476fc717e76bb43/info/thumbnail/thumbnail1563382006810.jpeg"
-            }),
-            new Basemap({
-                portalItem: {
-                    id: "75a3ce8990674a5ebd5b9ab66bdab893"  // Newspaper Basemap ID
-                },
-                thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/75a3ce8990674a5ebd5b9ab66bdab893/info/thumbnail/thumbnail1563382193586.jpeg"
-            })
-        ];
+        new Basemap({
+          portalItem: {
+            id: "67ab7f7c535c4687b6518e6d2343e8a2"  // Ocean Basemap ID
+          },
+          thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/67ab7f7c535c4687b6518e6d2343e8a2/info/thumbnail/thumbnail1561651100093.jpeg" // Correct URL for thumbnail
+        }),
+        new Basemap({
+          portalItem: {
+            id: "826498a48bd0424f9c9315214f2165d4"  // Colored Pencil Basemap ID
+          },
+          thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/826498a48bd0424f9c9315214f2165d4/info/thumbnail/thumbnail1580490854424.jpeg"
+        }),
+        new Basemap({
+          portalItem: {
+            id: "f35ef07c9ed24020aadd65c8a65d3754"  // Modern Antique Basemap ID
+          },
+          thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/f35ef07c9ed24020aadd65c8a65d3754/info/thumbnail/thumbnail1584383047375.jpeg"
+        }),
+        new Basemap({
+          portalItem: {
+            id: "867895a71a1840399476fc717e76bb43"  // Mid-Century Basemap ID
+          },
+          thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/867895a71a1840399476fc717e76bb43/info/thumbnail/thumbnail1563382006810.jpeg"
+        }),
+        new Basemap({
+          portalItem: {
+            id: "75a3ce8990674a5ebd5b9ab66bdab893"  // Newspaper Basemap ID
+          },
+          thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/75a3ce8990674a5ebd5b9ab66bdab893/info/thumbnail/thumbnail1563382193586.jpeg"
+        })
+      ];
 
-        // builds basemap gallery using custom basemaps
-        const basemapGallery = new BasemapGallery({
-          view: view,
-          source: customBasemaps
-          // source: [Basemap.fromId("arcgis-oceans"),Basemap.fromId("arcgis-colored-pencil"),Basemap.fromId("arcgis-modern-antique"),Basemap.fromId("arcgis-midcentury"),Basemap.fromId("arcgis-newspaper")] // autocasts to LocalBasemapsSource
-        });
+      // Builds basemap gallery using custom basemaps
+      const basemapGallery = new BasemapGallery({
+        view: view,
+        source: customBasemaps
+      });
 
-        //Create an Expand instance and set the content
-        //property to the DOM node of the basemap gallery widget
-        const bgExpand = new Expand({
-          view: view,
-          content: basemapGallery
-        });
+      // Create an Expand instance and set the content
+      // property to the DOM node of the basemap gallery widget
+      const bgExpand = new Expand({
+        view: view,
+        content: basemapGallery
+      });
 
-        // Add the expand instance to the ui
-        view.ui.add(bgExpand, "top-right");
+      // Add the expand instance to the ui
+      view.ui.add(bgExpand, "top-right");
 
       // Create locate button
       const locateWidget = new Locate({
@@ -344,30 +342,27 @@
         index: 2
       });
 
-      //Adding the const for the feature layer
+      // Adding the const for the feature layer
       const myAirports2 = new FeatureLayer({
         url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/My_Airports2/FeatureServer",
-
-        //addin the popup here
         outFields: ["AirportCode"],
       });
 
-      //SYMBOL ICON FOR MY AIRPORTS 2 "https://github.com/Esri/calcite-ui-icons/blob/master/icons/plane-24.svg"
-      // i need to add the icon for the airports - WILL ANY SGV WORK?
-      //adding the feature layer to the map
+      // Adding the feature layer to the map
       map.add(myAirports2);
 
-      //Set the point layers' LayerInfo
+      // Set the point layers' LayerInfo
       const pointInfos = {
         layer: myAirports2
       }
-      //Begin Editor constructor
+
+      // Begin Editor constructor
       const editor = new Editor({
         view: view,
         layerInfos: [pointInfos]
-      });    //End Editor constructor
+      });
 
-      //add widget to the view
+      // Add widget to the view
       view.ui.add(editor, "top-right");
       
     });
