@@ -184,17 +184,17 @@
       map.add(usaeduLayer);
 
       // Adding the const for the feature layer
-      const myAirports2 = new FeatureLayer({
+      const myAirports = new FeatureLayer({
         url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/My_Airports2/FeatureServer",
         outFields: ["AirportCode"],
       });
 
       // Adding the feature layer to the map
-      map.add(myAirports2);
+      map.add(myAirports);
 
       // Set the point layers' LayerInfo
       const pointInfos = {
-        layer: myAirports2
+        layer: myAirports
       }
 
       // Begin Editor constructor
@@ -223,7 +223,7 @@
             title: "Educational Institutions"
           },
           {
-            layer: myAirports2,
+            layer: myAirports,
             title: "My Airports"
           }
         ]
