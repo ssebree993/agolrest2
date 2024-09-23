@@ -247,7 +247,7 @@
 
       // Create the legend
       var legend = new Legend({
-        view: view, // Reference to the MapView or SceneView
+        view: view, // Reduce width, height of the legend
         layerInfos: [
           {
             layer: airportLayer,
@@ -331,7 +331,7 @@
 
       // Add the expand instance to the ui
       view.ui.add(bgExpand, "top-left",
-        { index: 1 });
+      );
 
       // Create locate button
       const locateWidget = new Locate({
