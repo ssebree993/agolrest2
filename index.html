@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Hello, AGOL Write this to the database for Mw!</title>
+  <title>Hello, AGOL Write this to the database for Me! Add Edit and Legend Widget!</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -21,7 +21,7 @@
     }
   </style>
 
-  <!-- Adding the modules, API key, and map constant needed for a full screen map app -->
+  <!-- Adding the modules, callback function as arguements,API key, and map constant needed for a full screen map app -->
   <script>
     require([
       "esri/config", 
@@ -35,8 +35,10 @@
       "esri/Graphic",
       "esri/layers/GraphicsLayer",
       "esri/layers/FeatureLayer",
-      "esri/widgets/Editor"
-    ], function(esriConfig, Map, MapView, BasemapGallery, Basemap, Expand, Search, Locate, Graphic, GraphicsLayer, FeatureLayer, Editor) {
+      "esri/widgets/Editor",
+      "esri/widgets/Legend",
+      "esri/WebMap",
+    ], function(esriConfig, Map, MapView, BasemapGallery, Basemap, Expand, Search, Locate, Graphic, GraphicsLayer, FeatureLayer, Editor, Legend, WebMap) {
       // Set the API key
       esriConfig.apiKey = "AAPKfc7af196c6e64aac988bbf7529dccd648UR6aqr1HCuaJ5GN7OXourF3WZ9GF_b8R9-mMcrEZMHlZzpuLXHwt5iwInOA9k4J";
       
@@ -53,7 +55,11 @@
         zoom: 9 // Zoom level
       });
 
-      // Adding the constructor for the graphics layer
+      //Add legend widget using sample code from developers.arcgis.com
+      //First reference the first portal layer in WebMap 
+
+
+      /* // Adding the constructor for the graphics layer
       const graphicsLayer = new GraphicsLayer();
       map.add(graphicsLayer);
 
@@ -139,11 +145,11 @@
       graphicsLayer.add(polyGraphic);
       graphicsLayer.add(lineGraphic);      
       graphicsLayer.add(pointGraphic);
-
+ */
       // Define a pop-up for usaeduLayer
       const popupEduusa = {
         "title": "Educational Institutions: {CITY}, {STABBR}",
-        content: "<p>As of 2024, <b>{NAME}</b>, is a " +
+        content: "<p>As of 2024, <b>{INSTNM}</b>, is a " +
           "<b>{SECTOR}</b> school.</p>" +
           "<p>For more information, visit: <a href='{WEBADDR}'>{WEBADDR}</a></p>"
       }
@@ -163,7 +169,7 @@
       const usaeduLayer = new FeatureLayer({
         url: "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Colleges_and_Universities_View/FeatureServer",
         renderer: eduRenderer,  // Calling the icon
-        outFields: ["NAME","ADDRESS"],
+        outFields: ["INSTNM","ADDR"],
         popupTemplate: popupEduusa
       });
 
