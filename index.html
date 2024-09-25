@@ -9,7 +9,7 @@
   <!-- Calls for the ArcGIS API's CSS file and JS Library -->
   <link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css">
   <script src="https://js.arcgis.com/4.30/"></script>
-
+  
   <!-- CSS to make a full screen map -->
   <style>
     html,
@@ -33,7 +33,7 @@
       "esri/widgets/Expand",
       "esri/widgets/Search",
       "esri/widgets/Locate",
-      "esri/Graphic",
+      "esri/Graphic",  // removed layers for troubleshooting; add back in later
       "esri/layers/GraphicsLayer",
       "esri/layers/FeatureLayer",
       "esri/widgets/Editor",
@@ -58,6 +58,92 @@
         center: [-98.995, 40.70100], // Longitude, latitude Kearney, NE
         zoom: 9 // Zoom level
       });
+      // Adding the constructor for the graphics layer
+      const graphicsLayer = new GraphicsLayer();
+      map.add(graphicsLayer);
+
+      // 1. Defining the geometry of the point
+      const point = { 
+        type: "point",  
+        longitude: -99.09420, // Longitude of UNK
+        latitude: 40.68342   // Latitude of UNK
+      };
+
+      // Define the geometry of the line
+      const polyline = {
+        type: "polyline", // autocasts as new Polyline()
+        paths: [[-99.05497, 41.02184],[-98.61799, 40.63240]]
+      };
+
+      // Define the geometry of the polygon
+      const polygon = {
+        type: "polygon", // autocasts as new Polygon()
+        rings: [[-99.24, 40.80],[-99.24, 40.76],[-98.60, 40.76],[-98.60, 40.8]]
+      };
+      
+      // 2. Defining marker style
+      const simpleMarkerSymbol = {  
+        type: "simple-marker", 
+        style: "square", 
+        size: "20px",
+        color: [0, 0, 255],  // Lopers blue 
+        outline: {  
+          color: [255, 255, 255], // White  
+          width: 3
+        }
+      }; 
+
+      const simpleLineSymbol = {
+        type: "simple-line", // autocasts as new SimpleLineSymbol()
+        color: [0,0,0],  //black line
+        width: 8
+      };
+
+      const simplePolyGraphic = {
+        type: "simple-fill", // autocasts as new SimpleFillSymbol()
+        color: [227, 139, 79, 0.8],
+        transparency: 0.9,
+        outline: { // autocasts as new SimpleLineSymbol()
+          color: [255, 255, 255], //White box 
+          width: 6
+        }
+      }; 
+
+      // Defining popup properties
+      const popupTemplate = {
+        title: "{Name}",
+        content: "{Description}"
+      };
+
+      const attributes = {
+        Name: "University of Nebraska - Kearney (UNK)",
+        Description: "Bruner Hall: <a href='https://www.unk.edu/academics/geography/index.php'> My Geography Home!</a>"
+      };
+      
+      //  Creating the point
+      const pointGraphic = new Graphic({  
+        geometry: point,  
+        symbol: simpleMarkerSymbol,
+        attributes: attributes,
+        popupTemplate: popupTemplate        
+      });
+
+      // Creating the line
+      const lineGraphic = new Graphic({
+        geometry: polyline,
+        symbol: simpleLineSymbol
+      });
+
+      // Creating the polygon
+      const polyGraphic = new Graphic({
+        geometry: polygon,
+        symbol: simplePolyGraphic
+      });
+
+      // Adding the point to the graphics layer
+      graphicsLayer.add(polyGraphic);
+      graphicsLayer.add(lineGraphic);      
+      graphicsLayer.add(pointGraphic);
 
       // Define a pop-up for usaeduLayer
       const popupEduusa = {
